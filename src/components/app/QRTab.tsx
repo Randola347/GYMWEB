@@ -80,7 +80,7 @@ export default function QRTab({ user }: QRTabProps) {
     setTimeout(() => setRefreshing(false), 1200);
   };
 
-  const qrValue = `GYMPRO-${user.memberId}-${user.plan.replace(/\s/g, "_")}`;
+  const qrValue = `GYMPRO-${user.memberId}`;
 
   return (
     <div className="px-5 pt-14 pb-6 flex flex-col items-center animate-fade-up">
@@ -211,28 +211,6 @@ export default function QRTab({ user }: QRTabProps) {
           <span className="text-white font-semibold text-sm font-mono">
             {user.memberId}
           </span>
-        </div>
-        <div
-          className="flex items-center justify-between px-4 py-3 rounded-2xl"
-          style={{
-            background: "rgba(24,24,27,0.9)",
-            border: "1px solid rgba(39,39,42,0.6)",
-          }}
-        >
-          <span className="text-zinc-500 text-sm">Plan</span>
-          <span className="text-sm font-bold" style={{ color: "#CCFF00" }}>
-            {user.plan}
-          </span>
-        </div>
-        <div
-          className="flex items-center justify-between px-4 py-3 rounded-2xl"
-          style={{
-            background: "rgba(24,24,27,0.9)",
-            border: "1px solid rgba(39,39,42,0.6)",
-          }}
-        >
-          <span className="text-zinc-500 text-sm">Válido hasta</span>
-          <span className="text-white font-medium text-sm">{user.planExpiry}</span>
         </div>
       </div>
 
