@@ -462,13 +462,13 @@ export default function PerfilTab({ user, onLogout, onUpdateUser }: PerfilTabPro
       </p>
 
       {showHelp && (
-        <div className="fixed inset-0 z-40 overflow-hidden md:absolute md:w-[390px] md:h-[844px]">
+        <div className="fixed inset-0 z-40 overflow-hidden md:inset-y-0 md:inset-x-auto md:left-1/2 md:w-[390px] md:-translate-x-1/2">
           <HelpModal onClose={() => setShowHelp(false)} />
         </div>
       )}
 
       {showSettings && (
-        <div className="fixed inset-0 z-40 overflow-hidden md:absolute md:w-[390px] md:h-[844px]">
+        <div className="fixed inset-0 z-40 overflow-hidden md:inset-y-0 md:inset-x-auto md:left-1/2 md:w-[390px] md:-translate-x-1/2">
           <SettingsModal user={user} onClose={() => setShowSettings(false)} onUpdateUser={onUpdateUser} />
         </div>
       )}

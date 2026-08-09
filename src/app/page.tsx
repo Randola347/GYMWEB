@@ -49,9 +49,9 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex items-center justify-center h-dvh min-h-0 overflow-hidden bg-zinc-950">
-      {/* Phone simulator frame on desktop */}
-      <div className="phone-frame w-full md:w-[390px] h-dvh md:h-[844px] bg-zinc-950 relative overflow-hidden md:rounded-[44px] md:shadow-2xl md:border md:border-zinc-800 flex flex-col">
+    <div className="app-viewport flex items-stretch justify-center overflow-hidden bg-zinc-950 md:items-center">
+      {/* Phone simulator frame on desktop; full screen on mobile */}
+      <div className="phone-frame relative flex flex-col w-full overflow-hidden bg-zinc-950">
         {!isLoggedIn ? (
           <AuthScreen
             authView={authView}
