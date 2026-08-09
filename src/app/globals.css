@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --neon: #CCFF00;
+  --bg-primary: #09090b;
+  --bg-secondary: #18181b;
+  --bg-card: #1c1c1f;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--bg-primary);
+  color: white;
+  overscroll-behavior: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+  border-radius: 2px;
+}
+
+/* Neon glow utilities */
+.neon-text {
+  color: #CCFF00;
+  text-shadow: 0 0 10px rgba(204, 255, 0, 0.5);
+}
+
+.neon-border {
+  border-color: #CCFF00;
+  box-shadow: 0 0 15px rgba(204, 255, 0, 0.2);
+}
+
+.neon-bg {
+  background-color: #CCFF00;
+  box-shadow: 0 0 20px rgba(204, 255, 0, 0.4);
+}
+
+/* Card styles */
+.glass-card {
+  background: rgba(28, 28, 31, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Animations */
+@keyframes pulse-neon {
+  0%, 100% { box-shadow: 0 0 10px rgba(204, 255, 0, 0.3); }
+  50% { box-shadow: 0 0 25px rgba(204, 255, 0, 0.7); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.animate-slide-right {
+  animation: slideInRight 0.3s ease-out forwards;
+}
+
+.animate-pulse-neon {
+  animation: pulse-neon 2s ease-in-out infinite;
+}
+
+/* Phone frame for desktop */
+.phone-frame {
+  max-width: 390px;
+  min-height: 844px;
+}
+
+/* Checkbox custom style */
+.neon-checkbox {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #3f3f46;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.neon-checkbox:checked {
+  background-color: #CCFF00;
+  border-color: #CCFF00;
+  box-shadow: 0 0 8px rgba(204, 255, 0, 0.5);
+}
+
+.neon-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 8px;
+  height: 12px;
+  border: 2px solid #09090b;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+/* QR code animation */
+.qr-scan-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #CCFF00, transparent);
+  animation: scanline 2s linear infinite;
+  opacity: 0.8;
+}
+
+/* Input styles */
+.gym-input {
+  background: rgba(39, 39, 42, 0.8);
+  border: 1px solid rgba(63, 63, 70, 0.8);
+  color: white;
+  border-radius: 12px;
+  padding: 14px 16px;
+  width: 100%;
+  outline: none;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.gym-input::placeholder {
+  color: #71717a;
+}
+
+.gym-input:focus {
+  border-color: #CCFF00;
+  box-shadow: 0 0 0 2px rgba(204, 255, 0, 0.15);
+}
+
+/* Button primary */
+.btn-neon {
+  background: #CCFF00;
+  color: #09090b;
+  font-weight: 700;
+  border-radius: 14px;
+  padding: 15px;
+  width: 100%;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 20px rgba(204, 255, 0, 0.3);
+}
+
+.btn-neon:hover {
+  box-shadow: 0 0 30px rgba(204, 255, 0, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-neon:active {
+  transform: translateY(0);
+}
