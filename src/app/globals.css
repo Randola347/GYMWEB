@@ -22,6 +22,18 @@ html, body {
   background-color: var(--bg-primary);
   color: white;
   overscroll-behavior: none;
+  overflow: hidden;
+}
+
+body {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+}
+
+/* Safe area aware top padding for notched phones */
+.pt-safe {
+  padding-top: calc(3.5rem + env(safe-area-inset-top, 0px));
 }
 
 /* Custom scrollbar */

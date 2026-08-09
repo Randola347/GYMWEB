@@ -343,7 +343,7 @@ export default function PerfilTab({ user, onLogout, onUpdateUser }: PerfilTabPro
   const [showSettings, setShowSettings] = useState(false);
 
   return (
-    <div className="px-5 pt-14 pb-6 space-y-5 animate-fade-up relative min-h-full">
+    <div className="px-5 pt-safe pb-6 space-y-5 animate-fade-up relative min-h-full">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-black text-white" style={{ letterSpacing: "-0.02em" }}>
           Mi Perfil

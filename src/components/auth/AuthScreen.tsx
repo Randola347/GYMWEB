@@ -65,7 +65,7 @@ export default function AuthScreen({
   return (
     <div className="flex flex-col h-full overflow-y-auto bg-zinc-950">
       {/* Hero Header */}
-      <div className="relative flex flex-col items-center justify-center pt-14 pb-8 px-6">
+      <div className="relative flex flex-col items-center justify-center pt-safe pb-8 px-6">
         {/* Background glow */}
         <div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full opacity-10 blur-3xl pointer-events-none"

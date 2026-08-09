@@ -83,7 +83,7 @@ export default function QRTab({ user }: QRTabProps) {
   const qrValue = `GYMPRO-${user.memberId}`;
 
   return (
-    <div className="px-5 pt-14 pb-6 flex flex-col items-center animate-fade-up">
+    <div className="px-5 pt-safe pb-6 flex flex-col items-center animate-fade-up">
       {/* Header */}
       <div className="w-full flex items-center justify-between mb-8">
         <div>

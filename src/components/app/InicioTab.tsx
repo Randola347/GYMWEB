@@ -32,7 +32,7 @@ export default function InicioTab({ user, onNavigate }: InicioTabProps) {
       : "Buenas noches";
 
   return (
-    <div className="px-5 pt-14 pb-6 space-y-5 animate-fade-up">
+    <div className="px-5 pt-safe pb-6 space-y-5 animate-fade-up">
       {/* Top bar */}
       <div className="flex items-center justify-between">
         <div>

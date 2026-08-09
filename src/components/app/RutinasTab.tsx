@@ -117,7 +117,7 @@ export default function RutinasTab() {
     <div className="flex flex-col h-full">
       {/* Header */}
       <div
-        className="px-5 pt-14 pb-4 flex-shrink-0"
+        className="px-5 pt-safe pb-4 flex-shrink-0"
         style={{
           background: "rgba(9,9,11,0.95)",
           borderBottom: "1px solid rgba(39,39,42,0.5)",
