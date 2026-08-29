@@ -1,108 +1,108 @@
 # GYMWEB
 
-GYMWEB es un MVP de SaaS multi-tenant para gimnasios, pensado para ayudar a entrenadores y dueños a gestionar rutinas, clientes y progreso sin depender de procesos manuales dispersos.
+GYMWEB es una SaaS multi-tenant para gimnasios pensada para gestionar clientes, rutinas, progreso y operaciones del entrenador desde una sola base de negocio.
 
-El proyecto combina un frontend mobile-first con un backend NestJS + Prisma, diseñado para escalar a varios gimnasios bajo la misma plataforma sin mezclar datos entre tenants.
+El proyecto combina un frontend mobile-first con un backend NestJS + Prisma + PostgreSQL, con un enfoque claro en aislamiento por gimnasio y administración de usuarios por tenant.
 
 ## Demo
 
-- Frontend mock inicial: mobile-first, dark theme, UX enfocada en clientes y entrenadores
-- Backend en desarrollo: autenticación JWT, aislamiento multi-tenant y base de datos PostgreSQL/Neon
-- Estado actual: arquitectura de backend y modelo de datos en construcción
+- Frontend mock inicial en Next.js
+- Backend NestJS en desarrollo
+- Arquitectura preparada para migración real a producción y despliegue por gimnasio
 
 ## Problema que resuelve
 
-Cada gimnasio tiene su propio conjunto de clientes, rutinas, asignaciones y progresos. En un sistema real, eso no puede depender de datos compartidos ni de estados locales del frontend.
+La mayoría de gimnasios tienen un problema común: toda la operación termina fragmentada entre WhatsApp, hojas de cálculo, recordatorios manuales y herramientas no integradas.
 
-GYMWEB está diseñado para:
-- separar cada gimnasio como tenant aislado
-- permitir que el dueño o entrenador asigne rutinas manualmente
-- registrar ejercicios completados por cada cliente
-- preparar la base para IA orientada al cliente y al entrenador en fases futuras
+GYMWEB busca centralizar:
+- la administración de clientes por gimnasio
+- la asignación manual de rutinas por entrenador
+- el seguimiento del progreso por ejercicio
+- la base de datos estructurada para crecer con IA y reporting
 
 ## Stack
 
 - Frontend: Next.js 16, React 18, TypeScript, Tailwind CSS
-- Backend: NestJS, Prisma, PostgreSQL
-- Database: Neon (PostgreSQL)
+- Backend: NestJS, Prisma, PostgreSQL (Neon)
 - Package manager: pnpm
+- Seguridad: JWT de acceso para autenticación con aislamiento por tenant
 
 ## Arquitectura
 
 ```text
 Frontend (Next.js)
-       |
-       v
-Backend (NestJS)
-       |
-       +--> Prisma ORM
-       |
-       +--> PostgreSQL / Neon
+    └── consume API REST del backend
 
-Cada entidad tenant-aware incluye gymId y se filtra por tenant autenticado.
+Backend (NestJS)
+    ├── Auth / JWT
+    ├── Gyms
+    ├── Users
+    ├── Routines
+    ├── RoutineAssignments
+    └── ExerciseCompletions
+
+Database (PostgreSQL / Prisma)
+    └── aislamiento por gym_id en cada entidad tenant-aware
 ```
 
 ## Funcionalidades principales
 
 - Multi-tenant por gimnasio
-- Autenticación JWT real
-- Usuarios con roles: OWNER, TRAINER, CLIENT, SUPERADMIN
-- Rutinas por gimnasio
+- Aislamiento explícito de datos por `gym_id`
+- Usuarios con roles: `SUPERADMIN`, `OWNER`, `TRAINER`, `CLIENT`
+- Rutinas creadas por el entrenador/owner
 - Asignación manual de rutinas a clientes
-- Registro de completados por ejercicio
-- Base preparada para IA orientada a cliente y analítica para entrenadores
-
-## Roadmap
-
-### Fase 1: Backend real
-- NestJS + Prisma + PostgreSQL
-- modelo multi-tenant con gyms, users, routines, routine_exercises, routine_assignments y exercise_completions
-- JWT y guard de aislamiento por tenant
-- superadmin para crear gimnasios
-
-### Fase 2: Frontend conectado a API real
-- reemplazar mocks por datos reales
-- persistencia de rutinas y completados
-- panel de asignación para entrenadores
-
-### Fase 3: IA para cliente
-- chat con contexto de su rutina actual
-- RAG sobre FAQ y técnica de ejercicios
-
-### Fase 4: Insights para entrenador
-- resumen semanal con patrones de progreso y seguimiento
+- Registro de ejercicios completados por fecha
+- Base preparada para IA del cliente y insights del entrenador en fases posteriores
 
 ## Estado del proyecto
 
-Este proyecto está enfocado en construir una base SaaS robusta y profesional, con énfasis en arquitectura, seguridad y aislamiento de datos antes de añadir funcionalidades más “bonitas” visualmente.
+Actualmente el proyecto está en la fase de backend real y arquitectura multi-tenant.
 
-## Instalación local (opcional)
+- Fase 1 completada: NestJS + Prisma + schema base + autenticación preparada
+- Fase 2: conexión del frontend a la API real
+- Fase 3: IA para cliente con contexto de su rutina y FAQ
+- Fase 4: insights automáticos para entrenadores
+
+## Portafolio / valor del proyecto
+
+Este proyecto está pensado como una demostración de arquitectura SaaS realista para un cliente con varios gimnasios, no solo como una landing page o mock visual.
+
+Incluye decisiones reales de producto y backend como:
+- aislamiento multi-tenant
+- datos estructurados por entidad
+- autenticación segura
+- separación entre coach y cliente
+- escalabilidad para más módulos en el futuro
+
+## Local development
+
+> Esta sección es opcional y está pensada para desarrolladores o evaluadores técnicos.
 
 ```powershell
-# instalar dependencias del frontend
+# raíz del repo
 pnpm install
 
-# instalar dependencias del backend
+# backend
 cd backend
 pnpm install
-```
-
-Si necesitas generar el cliente de Prisma:
-
-```powershell
-cd backend
 pnpm prisma generate
+pnpm run build
 ```
 
-## Notas de diseño
+## Notas técnicas relevantes
 
-- Se usa pnpm como gestor de paquetes
-- La autenticación sigue la estrategia JWT de acceso con corta expiración para la v1
-- El aislamiento multi-tenant se hace por `gymId` del usuario autenticado, nunca por un parámetro arbitrario del cliente
-- El backend prepara la base para crecer sin comprometer la seguridad ni la integridad del negocio
+- Se usa `pnpm` como gestor de paquetes principal.
+- El backend está preparado para PostgreSQL y Prisma.
+- La autenticación usa JWT de acceso con expiración corta por diseño en la v1.
+- El multi-tenant se resuelve por `gym_id` del usuario autenticado y no por parámetros del cliente.
 
-## Contacto
+## Objetivo de carrera
 
-- GitHub: https://github.com/Randola347
-- Proyecto: GYMWEB
+Este proyecto refleja mi enfoque en arquitectura backend, diseño de sistemas escalables y product thinking aplicado a SaaS. Es una base sólida para seguir creciendo en:
+- NestJS
+- Prisma + PostgreSQL
+- autenticación y seguridad
+- diseño de sistemas multi-tenant
+- IA aplicada a productos reales
 
