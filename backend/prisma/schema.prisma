@@ -1,0 +1,151 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum GymStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum UserRole {
+  SUPERADMIN
+  OWNER
+  TRAINER
+  CLIENT
+}
+
+enum UserStatus {
+  ACTIVE
+  INVITED
+  DISABLED
+}
+
+enum RoutineAssignmentStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+}
+
+model Gym {
+  id          String                 @id @default(uuid()) @db.Uuid
+  name        String
+  slug        String                 @unique
+  status      GymStatus              @default(ACTIVE)
+  createdAt   DateTime               @default(now()) @db.Timestamptz
+  updatedAt   DateTime               @updatedAt @db.Timestamptz
+
+  users       User[]
+  routines    Routine[]
+  assignments RoutineAssignment[]
+  completions ExerciseCompletion[]
+
+  @@map("gyms")
+}
+
+model User {
+  id                    String                @id @default(uuid()) @db.Uuid
+  gymId                 String?               @db.Uuid
+  gym                   Gym?                  @relation(fields: [gymId], references: [id], onDelete: SetNull)
+  name                  String
+  email                 String
+  passwordHash          String                @map("password_hash")
+  role                  UserRole              @default(CLIENT)
+  status                UserStatus            @default(ACTIVE)
+  createdAt             DateTime              @default(now()) @db.Timestamptz
+  updatedAt             DateTime              @updatedAt @db.Timestamptz
+
+  createdRoutines       Routine[]             @relation("RoutineCreatedBy")
+  clientAssignments     RoutineAssignment[]   @relation("RoutineAssignmentClient")
+  assignedByAssignments RoutineAssignment[]   @relation("RoutineAssignmentAssignedBy")
+  completions           ExerciseCompletion[]
+
+  @@unique([gymId, email])
+  @@index([gymId, role])
+  @@map("users")
+}
+
+model Routine {
+  id          String           @id @default(uuid()) @db.Uuid
+  gymId       String           @db.Uuid
+  gym         Gym              @relation(fields: [gymId], references: [id], onDelete: Cascade)
+  createdById String           @db.Uuid
+  createdBy   User             @relation("RoutineCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  name        String
+  description String?
+  daysPerWeek Int?
+  createdAt   DateTime         @default(now()) @db.Timestamptz
+  updatedAt   DateTime         @updatedAt @db.Timestamptz
+
+  exercises   RoutineExercise[]
+  assignments RoutineAssignment[]
+
+  @@index([gymId, createdById])
+  @@map("routines")
+}
+
+model RoutineExercise {
+  id          String               @id @default(uuid()) @db.Uuid
+  routineId   String               @db.Uuid
+  routine     Routine              @relation(fields: [routineId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  dayNumber   Int
+  orderIndex  Int
+  sets        Int?
+  repetitions Int?
+  durationSec Int?
+  notes       String?
+  createdAt   DateTime             @default(now()) @db.Timestamptz
+  updatedAt   DateTime             @updatedAt @db.Timestamptz
+
+  completions ExerciseCompletion[]
+
+  @@index([routineId, dayNumber, orderIndex])
+  @@map("routine_exercises")
+}
+
+model RoutineAssignment {
+  id           String                   @id @default(uuid()) @db.Uuid
+  gymId        String                   @db.Uuid
+  gym          Gym                      @relation(fields: [gymId], references: [id], onDelete: Cascade)
+  routineId    String                   @db.Uuid
+  routine      Routine                  @relation(fields: [routineId], references: [id], onDelete: Cascade)
+  clientId     String                   @db.Uuid
+  client       User                     @relation("RoutineAssignmentClient", fields: [clientId], references: [id], onDelete: Cascade)
+  assignedById String                   @db.Uuid
+  assignedBy   User                     @relation("RoutineAssignmentAssignedBy", fields: [assignedById], references: [id], onDelete: Restrict)
+  startsOn     DateTime                 @db.Date
+  endsOn       DateTime?                @db.Date
+  status       RoutineAssignmentStatus  @default(ACTIVE)
+  createdAt    DateTime                 @default(now()) @db.Timestamptz
+  updatedAt    DateTime                 @updatedAt @db.Timestamptz
+
+  completions  ExerciseCompletion[]
+
+  @@index([gymId, clientId])
+  @@index([gymId, routineId])
+  @@map("routine_assignments")
+}
+
+model ExerciseCompletion {
+  id               String            @id @default(uuid()) @db.Uuid
+  gymId            String            @db.Uuid
+  gym              Gym               @relation(fields: [gymId], references: [id], onDelete: Cascade)
+  assignmentId     String            @db.Uuid
+  assignment       RoutineAssignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  routineExerciseId String            @db.Uuid
+  routineExercise  RoutineExercise   @relation(fields: [routineExerciseId], references: [id], onDelete: Cascade)
+  clientId         String            @db.Uuid
+  client           User              @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  completedOn      DateTime          @db.Date
+  completedAt      DateTime          @default(now()) @db.Timestamptz
+
+  @@unique([assignmentId, routineExerciseId, completedOn])
+  @@index([gymId, clientId, completedOn])
+  @@map("exercise_completions")
+}
